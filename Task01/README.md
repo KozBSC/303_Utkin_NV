@@ -3,20 +3,17 @@
     Тип файла: txt
     Поля:
         1. genres: string
-    Количество строк: 18
 ## movies.csv
     Тип файла: csv
     Поля:
         1. moveId: int
         2. title: string
         3. genres: string
-    Разделитель: ','
-    Количество строк: 9743
+    Разделитель: ","
 ## occupation.txt
     Тип файла: txt
     Поля:
         1. occupation: string
-    Количество строк: 21
 ## ratings.csv
     Тип файла: csv
     Поля:
@@ -24,8 +21,7 @@
         2. movieId: int
         3. rating: float
         4. timestamp: int
-    Разделитель: ','
-    Количество строк: 23774
+    Разделитель: ","
 ## tags.csv
     Тип файла: csv
     Поля:
@@ -33,8 +29,7 @@
         2. movieId: int
         3. tag: string
         4. timestamp: long
-    Разделитель: ','
-    Количество строк: 3684
+    Разделитель: ","
 ## users.txt
     Тип файла: txt
     Поля:
@@ -44,5 +39,4 @@
         sex: string
         date: string
         work: string
-    Разделитель: '|'
-    Количество строк: 943
+    Разделитель: "|"
