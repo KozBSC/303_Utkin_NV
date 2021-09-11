@@ -1,0 +1,16 @@
+Версия - 3.36.0
+Доступные режимы вывода данных:
+    ascii
+    box
+    csv
+    column
+    html
+    insert
+    json
+    line
+    list
+    markdown
+    quote
+    table
+    tabs
+    tcl 
