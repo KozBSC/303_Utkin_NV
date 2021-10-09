@@ -56,7 +56,7 @@ if __name__ == '__main__':
             for film in reader:
                 movieId = film['movieId']
                 title = film['title'].replace('"', '""').replace("'", "''")
-                year = (lambda res: res.group(0) if res is not None else 'null')(re.search(r'\d{4}', film['title']))
+                year = (lambda res: res.group(1) if res is not None else 'null')(re.search(r'\((\d{4})\)', film['title']))
                 genres = film['genres']
                 movies_insert += f"({movieId}, '{title}', {year}, '{genres}'),\n"
             db_init.write(movies_insert[:-2] + ';\n\n')
