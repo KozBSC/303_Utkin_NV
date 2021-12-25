@@ -1,6 +1,6 @@
 DROP TABLE IF EXISTS dentists;
 DROP TABLE IF EXISTS employee_statuses;
-DROP TABLE IF EXISTS specilizations;
+DROP TABLE IF EXISTS specializations;
 DROP TABLE IF EXISTS services;
 DROP TABLE IF EXISTS categories;
 DROP TABLE IF EXISTS appointments;
@@ -8,6 +8,7 @@ DROP TABLE IF EXISTS appointment_statuses;
 DROP TABLE IF EXISTS clients;
 DROP TABLE IF EXISTS dentists_statistics;
 DROP TABLE IF EXISTS salaries;
+DROP TABLE IF EXISTS dentists_work_hours;
 
 CREATE TABLE employee_statuses(
     id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
@@ -15,9 +16,9 @@ CREATE TABLE employee_statuses(
 );
 
 
-CREATE TABLE specilizations(
+CREATE TABLE specializations(
     id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
-    specilization TEXT NOT NULL
+    specialization TEXT NOT NULL
 );
 
 CREATE TABLE dentists(
@@ -45,11 +46,14 @@ CREATE TABLE services(
     id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
     title TEXT NOT NULL,
     cathegory_id INTEGER NOT NULL,
+    specialization_id INTEGER NOT NULL,
     duration_in_minutes REAL NOT NULL,
     price REAL NOT NULL,
     CHECK(duration_in_minutes > 0 and price >= 0),
     FOREIGN KEY(cathegory_id)
             REFERENCES categories(id) ON DELETE RESTRICT ON UPDATE CASCADE
+    FOREIGN KEY(specialization_id)
+            REFERENCES specilizations(id) ON DELETE RESTRICT ON UPDATE CASCADE
 );
 
 CREATE TABLE appointment_statuses(
@@ -107,13 +111,22 @@ CREATE TABLE salaries(
             REFERENCES dentists(id) ON DELETE RESTRICT ON UPDATE CASCADE
 );
 
+CREATE TABLE dentists_work_hours(
+    id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+    dentist_id INTEGER NOT NULL,
+    start_time TEXT,
+    end_time TEXT,
+    FOREIGN KEY (dentist_id) 
+        REFERENCES dentists (id) ON DELETE RESTRICT ON UPDATE CASCADE
+);
+
 INSERT INTO employee_statuses (status)
 VALUES
 ('работает'),
 ('уволен'),
 ('в отпуске');
 
-INSERT INTO specilizations (specilization)
+INSERT INTO specializations (specialization)
 VALUES
 ('терапевт'),
 ('хирург'),
@@ -142,12 +155,13 @@ VALUES
 ('Крылова ', 'Кристина', null, '15.01.2000', '+79871229357', '5348913651'),
 ('Соколов', 'Никита', 'Григорьевич', '06.05.1970', '+79571219253', '0000000001');
 
-INSERT INTO services (title, cathegory_id, duration_in_minutes, price)
+INSERT INTO services (title, cathegory_id, specialization_id, duration_in_minutes, price)
 VALUES
-('Лечение периодонтита', 2, 160, 10800),
-('Зубосохраняющия операция', 3, 180, 12400),
-('Имплантация одного зуба', 1, 60, 16500),
-('Лечение пульпита', 2, 40, 9000);
+('Лечение периодонтита', 2, 1, 160, 10800),
+('Зубосохраняющия операция', 3, 2, 180, 12400),
+('Имплантация одного зуба', 1, 1, 60, 16500),
+('Ортодонтический микроимплантат с установкой', 1, 3, 120, 7000),
+('Лечение пульпита', 2, 1, 40, 9000);
 
 INSERT INTO appointment_statuses (status)
 VALUES
@@ -182,3 +196,7 @@ VALUES
 (3, date('now'), 40000, 32000),
 (5, date('now'), 40000, 36000),
 (6, date('now'), 7000, 5950);
+
+INSERT INTO dentists_work_hours (dentist_id, start_time, end_time)
+VALUES
+(1, '2021-12-27 10:00:00', '2021-12-27 18:00:00');
