@@ -9,6 +9,7 @@ DROP TABLE IF EXISTS clients;
 DROP TABLE IF EXISTS dentists_statistics;
 DROP TABLE IF EXISTS salaries;
 DROP TABLE IF EXISTS dentists_work_hours;
+DROP TABLE IF EXISTS work_hours_statuses;
 
 CREATE TABLE employee_statuses(
     id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
@@ -116,21 +117,29 @@ CREATE TABLE dentists_work_hours(
     dentist_id INTEGER NOT NULL,
     start_time TEXT,
     end_time TEXT,
-    FOREIGN KEY (dentist_id) 
-        REFERENCES dentists (id) ON DELETE RESTRICT ON UPDATE CASCADE
+    work_hours_status_id INTEGER NOT NULL,
+    FOREIGN KEY (dentist_id)
+        REFERENCES dentists (id) ON DELETE RESTRICT ON UPDATE CASCADE,
+    FOREIGN KEY (work_hours_status_id) 
+        REFERENCES work_hours_statuses(id) ON DELETE RESTRICT ON UPDATE CASCADE
+);
+
+CREATE TABLE work_hours_statuses(
+    id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+    status TEXT NOT NULL
 );
 
 INSERT INTO employee_statuses (status)
 VALUES
-('работает'),
-('уволен'),
-('в отпуске');
+('Работает'),
+('Уволен'),
+('В отпуске');
 
 INSERT INTO specializations (specialization)
 VALUES
-('терапевт'),
-('хирург'),
-('ортодонт');
+('Терапевт'),
+('Хирург'),
+('Ортодонт');
 
 INSERT INTO dentists (last_name, first_name, middle_name, birthday, specialization_id, employee_status_id, earning_in_percent)
 VALUES 
@@ -143,9 +152,9 @@ VALUES
 
 INSERT INTO categories (category)
 VALUES
-('имплантация'),
-('терапевтическая стоматология'),
-('хирургическая стоматология');
+('Имплантация'),
+('Терапевтическая стоматология'),
+('Хирургическая стоматология');
 
 INSERT INTO clients (last_name, first_name, middle_name, birthday, phone_number, passport)
 VALUES 
@@ -165,9 +174,9 @@ VALUES
 
 INSERT INTO appointment_statuses (status)
 VALUES
-('завершена'),
-('актуальна'),
-('отменена');
+('Завершена'),
+('Актуальна'),
+('Отменена');
 
 INSERT INTO appointments (client_id, dentist_id, appointment_time, start_time, end_time, appointment_status_id, service_id)
 VALUES
@@ -197,6 +206,11 @@ VALUES
 (5, date('now'), 40000, 36000),
 (6, date('now'), 7000, 5950);
 
-INSERT INTO dentists_work_hours (dentist_id, start_time, end_time)
+INSERT INTO work_hours_statuses (status)
 VALUES
-(1, '2021-12-27 10:00:00', '2021-12-27 18:00:00');
+('Актуален'),
+('Отмененен');
+
+INSERT INTO dentists_work_hours (dentist_id, start_time, end_time, work_hours_status_id)
+VALUES
+(1, '2021-12-27 10:00:00', '2021-12-27 18:00:00', 1);
